@@ -1,0 +1,32 @@
+<div class="blog-item item">
+  	{% if show_image %}
+		{% if article.content contains '<img' %}
+  			{% assign image-size = settings.home_blogs_imagesize %}
+  			<div class="image">
+				{% assign imageSize = settings.home_blogs_imagesize %}
+				<img src="{{ article.image | img_url: imageSize }}" class="img-responsive" alt="{{ article.title }}" />
+			</div>
+		{% endif %}
+	{% endif %}
+	<div class="media-body clearfix">
+		<div class="blog-meta">
+			{% if show_createdate %} 
+				<span class="blog-created">
+					<span class="icon-calendar">
+						<time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: "<span class='day'>%d</span><span class='hr'></span><span class='month'>%b</span>" }}</time>
+					</span>
+				</span>
+			{% endif %}
+		</div>
+      	<div class="blog-content">
+            <h4><a href="{{ article.url }}" title="{{ article.title }}">{{ article.title }}</a></h4>
+            <div class="blog-shortinfo">
+                {% if article.excerpt.size > 0 %}
+                    {{ article.excerpt }}
+                {% else %}
+                    <p>{{ article.content | strip_html | truncatewords: 10 }}</p>
+                {% endif %}
+            </div>
+      	</div>
+	</div>
+</div>

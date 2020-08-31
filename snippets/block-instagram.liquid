@@ -1,0 +1,39 @@
+<div class="instagram">
+  	{% if settings.instagram_imgtitle %}
+  		<h4 class="instagram-imgtitle">
+          	<a href="{{ settings.instagram_link }}" title="{{ settings.instagram_title }}">
+          		<img class="img-responsive" alt="{{ settings.instagram_title }}" src="{{ 'title-instagram.png' | asset_url }}" />
+          	</a>
+  		</h4>
+  	{% else %}
+        <h4 class="instagram-title">
+          	<a href="{{ settings.instagram_link }}" title="{{ settings.instagram_title }}">
+            	<i class="fa fa-instagram"></i>
+            	<span>{{ settings.instagram_title }}</span>
+          	</a>
+        </h4>
+  	{% endif %}
+	<div class="instagram-content">
+		<div id="InstagramFeed" class="clearfix"></div>
+	</div>
+</div>
+<script type="text/javascript">
+	$(document).ready(function(){
+	    var feed = new Instafeed({
+			clientId: '{{ settings.instagram_clientid }}',
+			get: '{{ settings.instagram_get }}',
+			{% if settings.instagram_tag != blank %}tagName: '{{ settings.instagram_tag }}',{% endif %}
+			{% if settings.instagram_locationId != blank %}locationId: '{{ settings.instagram_locationId }}',{% endif %}
+			{% if settings.instagram_userid != blank %}userId: '{{ settings.instagram_userid }}',{% endif %}
+			{% if settings.instagram_accessToken != blank %}accessToken: '{{ settings.instagram_accessToken }}',{% endif %}
+			target: 'InstagramFeed',
+			limit: '{{ settings.instagram_limit }}',
+          	resolution: '{{ settings.instagram_resolution }}',
+			before: function() {},
+	        after: function() {},
+	        success: function() {},
+	        error: function() {}
+		});
+		feed.run();
+	});
+</script>

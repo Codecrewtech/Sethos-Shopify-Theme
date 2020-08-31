@@ -1,0 +1,19 @@
+{% if settings.sidebar_blogs_enable %}
+	{% assign title_block = settings.sidebar_blogs_title %}
+	{% assign blogs_home = blogs[settings.sidebar_blogs_select].articles %}
+	{% assign show_image = settings.sidebar_blogs_showimage %}
+	{% assign show_createdate = settings.sidebar_blogs_createdate %}
+	
+    <article class="block sidebar_blogs">
+        {% if title_block != blank %}
+            <h3 class="title_block"><span>{{ title_block }}</span></h3>
+        {% endif %}
+        <div class="block_content">
+          	<div class="apolloblog-latest">
+              	{% for article in blogs_home limit:settings.sidebar_blogs_limit %}
+          			{% include 'blog-item-sidebar' %}
+              	{% endfor %}
+          	</div>
+        </div>
+    </article>
+{% endif %}

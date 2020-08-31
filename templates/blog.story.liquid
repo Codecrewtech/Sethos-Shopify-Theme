@@ -1,0 +1,58 @@
+{% include 'breadcrumb' %}
+<section id="columns" class="columns-container">
+    <div class="container">
+        <div class="page-wrap">
+            <div class="row">
+                <div id="center_column" class="center_column col-md-9">
+                    <div id="content">
+                        <div id="blog-listing" class="blogs-container blog-story">
+                            <div class="inner">
+                              {% paginate blog.articles by 5 %}
+                                {% for article in blog.articles %}
+                                    <div class="blog-item">
+                                        {% if article.image %}
+                                            {% assign imageSize = settings.blogpage_imagesize %}
+                                            <div class="image">
+                                                <img class="img-responsive" src="{{ article.image | img_url: imageSize }}" alt="{{ article.title }}" />
+                                            </div>
+                                        {% endif %}
+                                        {% capture author %}<strong>{{ article.author }}</strong>{% endcapture %}
+                                        {% capture date %}<time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: format: 'month_day_year' }}</time>{% endcapture %}
+                                        <div class="blog-meta clearfix">
+                                            <div class="postby">
+                                                {{ 'blogs.article.author_on_date_html' | t: author: author }}
+                                              	{% if article.excerpt.size > 0 %}
+                                                  {{ article.excerpt }}
+                                                {% endif %}
+                                            </div>
+                                          	<div class="rte">                                            
+                                            <p>{{ article.content | strip_html | truncatewords: 100 }}</p>
+                                        </div>
+                                        </div>
+                                        {% comment %}{% unless forloop.last %}<hr>{% endunless %}{% endcomment %}
+                                    </div>
+                                {% endfor %}
+                                {% if paginate.pages > 1 %}
+                                <div class="text-center">
+                                  {% include 'pagination-custom' %}
+                                </div>
+                                {% endif %}
+                                {% endpaginate %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="right_column" class="column sidebar col-md-3">
+                  {% if settings.blogstory_html_enable %}
+                  	{% assign image_name = 'blogstore_html.png' %}
+                  	{% assign title_block = settings.blogstory_html_title %}
+                  	{% assign image_link = settings.blogstory_html_link %}
+                  	{% assign btn_text = settings.blogstory_html_btn %}
+                 	{% assign desc_block = settings.blogstory_html_des %} 
+                    {% include 'blog-story-sidebar' %}
+                  {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

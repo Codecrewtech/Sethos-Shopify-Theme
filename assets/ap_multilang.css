@@ -1,0 +1,18 @@
+/* css for box multialnguage */
+.ap-multilang-box {
+	float : right;
+  margin-top: 10px;
+}
+
+.ap-multilang-box img {
+	margin : 0px 5px;
+}
+
+.dropit-submenu {
+	background-color : white;
+  	border : 1px solid #e8e8e8;
+}
+
+.item-lang:hover {
+  background-color : gainsboro;
+}

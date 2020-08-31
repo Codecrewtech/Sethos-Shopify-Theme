@@ -1,0 +1,15 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+{{ 'ap-search-by-car.css' | asset_url | stylesheet_tag }}
+
+{{ 'ap-search-by-car-customer.css' | asset_url | stylesheet_tag }}
+
+{{ 'ap-search-by-car.js' | asset_url | script_tag }}
+
+<script>
+
+    var searchLinks = [];
+
+    var searchCollection = {{ collections | json }};
+
+</script>

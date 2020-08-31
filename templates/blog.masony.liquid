@@ -1,0 +1,99 @@
+{% paginate blog.articles by 10 %}
+{% include 'breadcrumb' %}
+<section id="columns" class="columns-container">
+    <div class="container">
+        <div class="page-wrap">
+            <div class="row">
+                <div id="center_column" class="center_column col-md-12">
+                    <div id="content">
+                        <div id="blog-listing" class="blogs-container blog--masony">
+                          	{% if current_tags %}
+                                <h1 class="blogTitle hidden">{{ blog.title | link_to: blog.url }} &mdash; {{ current_tags.first }}</h1>
+                            {% else %}
+                                <h1 class="blogTitle hidden">{{ blog.title }}</h1>
+                            {% endif %}
+                          	<div class="inner">
+                                <div class="blog-grid">
+                                    <div class="grid-sizer"></div>
+                                    {% for article in blog.articles %}
+                                        <div class="grid-item">
+                                            <div class="blog-item clearfix">
+                                                <div class="rte">
+                                                    {% if article.image %}
+                                                        {% assign imageSize = settings.blogpage_imagesize %}
+                                                        <div class="image">
+                                                            <img class="img-responsive" src="{{ article.image | img_url: imageSize }}" alt="{{ article.title }}" />
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                                <div class="blog__right">
+                                                    <h3><a href="{{ article.url }}">{{ article.title | truncatewords: 9 }}</a></h3>
+                                                    {% capture author %}<strong>{{ article.author }}</strong>{% endcapture %}
+                                                    {% capture date %}<time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: format: 'month_day_year' }}</time>{% endcapture %}
+                                                    <div class="blog-meta clearfix">
+                                                        <div class="blog__post">
+                                                            <div class="blog__post--createmasony">
+                                                                <span class="blog__post--datemasony">{{ article.published_at | date: "%d" }}</span>
+                                                                <span class="blog_post--monthmasony">{{ article.published_at | date: "%b" }}</span>,
+                                                                <span class="blog_post--yearmasony">{{ article.published_at | date: "%Y" }}</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="postby hidden">
+                                                            <em>{{ article.author }}</em>
+                                                        </div>
+                                                        {% if blog.comments_enabled? %}
+                                                            <div class="comment-meta hidden">
+                                                                <a href="{{ article.url }}#Comments">
+                                                                    {{ 'blogs.comments.comments_with_count' | t: count: article.comments_count }}
+                                                                </a>
+                                                            </div>
+                                                        {% endif %}
+                                                        <div class="blog-tags">
+                                                            {% include 'tags-article' %}
+                                                        </div>
+                                                    </div>
+                                                    <div class="rte">
+                                                        {% if article.excerpt.size > 0 %}
+                                                            {{ article.excerpt }}
+                                                        {% else %}
+                                                            <p>{{ article.content | strip_html | truncatewords: 20 }}</p>
+                                                        {% endif %}
+                                                    </div>
+                                                    <p><a class="btn btn-readmore" href="{{ article.url }}">{{ 'blogs.article.read_more' | t }} &rarr;</a></p>
+                                                    {% comment %}{% unless forloop.last %}<hr>{% endunless %}{% endcomment %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                {% if paginate.pages > 1 %}
+                                    <div class="text-center">
+                                        {% include 'pagination-custom' %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{{ 'isotope.pkgd.min.js' | asset_url | script_tag }}
+{{ 'imagesloaded.pkgd.min.js' | asset_url | script_tag }}
+<script type="text/javascript">
+	$(document).ready(function() {
+		var $grid = $('.blog-grid').isotope({
+          	itemSelector: '.grid-item',
+          	percentPosition: true,
+          	masonry: {
+            	columnWidth: '.grid-sizer'
+          	}
+        });
+        // layout Isotope after each image loads
+        $grid.imagesLoaded().progress( function() {
+          	$grid.isotope('layout');
+        });
+	});
+</script>
+{% endpaginate %}

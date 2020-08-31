@@ -1,0 +1,30 @@
+{% layout 'theme' %}
+<section id="activate-account-page">
+    <div class="container">
+      	<div class="pageActive">
+            <header class="page-header">
+                <h1>{{ 'customer.activate_account.title' | t }}</h1>
+            </header>
+            <div class="activateaccount-box">
+                <p>{{ 'customer.activate_account.subtext' | t }}</p>
+                {% form 'activate_customer_password' %}
+                    {{ form.errors | default_errors }}
+                    <div class="clearfix form-group">
+                        <label for="CustomerPassword" class="label--hidden">{{ 'customer.activate_account.password' | t }}</label>
+                        <input class="form-control" type="password" value="" name="customer[password]" id="CustomerPassword" placeholder="{{ 'customer.activate_account.password' | t }}">
+                    </div>
+                    <div class="clearfix form-group">
+                        <label for="CustomerPasswordConfirmation" class="label--hidden">{{ 'customer.activate_account.password_confirm' | t }}</label>
+                        <input class="form-control" type="password" value="" name="customer[password_confirmation]" id="CustomerPasswordConfirmation" placeholder="{{ 'customer.activate_account.password_confirm' | t }}">
+                    </div>
+                    <div class="text-center">
+                        <p>
+                            <input type="submit" class="btn btn-outline exclusive" value="{{ 'customer.activate_account.submit' | t }}">
+                        </p>
+                        <input type="submit" class="btn btn-outline exclusive" name="decline" value="{{ 'customer.activate_account.cancel' | t }}">
+                  </div>
+                {% endform %}
+            </div>
+      	</div>
+    </div>
+</section>

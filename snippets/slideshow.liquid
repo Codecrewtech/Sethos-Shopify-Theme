@@ -1,0 +1,97 @@
+{% if settings.slider_width_mode == "boxed" %}
+    <div class="container">
+{% endif %}
+<div class="slider-container {{ settings.slider_group_class }}">
+    <div id="sliderlayer" class="apollo_slides clearfix">
+        {% for i in (1..6) %}
+      		{% assign slide = 'slide_' | append: i %}
+      		{% assign slide_img = 'slideshow_image_' | append: i | append: '.jpg' %}
+      		{% assign slide_url = 'slideshow_url_' | append: i %}
+      		{% assign slide_title = 'slideshow_title_' | append: i %}
+      		{% assign slide_captionid = 'htmlcaption' | append: i %}
+            {% if settings[slide] %}
+      			{% if settings[slide_url] == blank %}
+      				<img class="img-responsive" alt="{{ settings[slide_title] }}" src="{{ slide_img | asset_url }}" title="#{{ slide_captionid }}" />
+      			{% else %}
+      				<a href="{{ settings[slide_url] }}" class="slide-link">
+                      	<img class="img-responsive" alt="{{ settings[slide_title] }}" src="{{ slide_img | asset_url }}" title="#{{ slide_captionid }}" />
+      				</a>
+      			{% endif %}
+            {% endif %}
+        {% endfor %}
+    </div>
+  	{% for i in (1..6) %}
+        {% assign slide = 'slide_' | append: i %}
+        {% assign slide_title = 'slideshow_title_' | append: i %}
+        {% assign slide_des = 'slideshow_des_' | append: i %}
+        {% assign slide_textlink = 'slideshow_textlink_' | append: i %}
+        {% assign slide_urllink = 'slideshow_urllink_' | append: i %}
+        {% assign slide_caption = 'caption_' | append: i %}
+        {% assign slide_txt1 = 'slideshow_txtfirst_' | append: i %}
+        {% assign slide_captionid = 'htmlcaption' | append: i %}
+  		
+  		{% assign capture_title_color = 'slideshow_title_color_' | append: i %}
+        {% assign capture_des_color = 'slideshow_des_color_' | append: i %}
+        {% assign capture_txtf_color = 'slideshow_txtfirst_color_' | append: i %}
+  		
+  		{% if settings[slide] %}
+  			<div id="{{ slide_captionid }}" class="apollo-html-caption">
+              	{% if settings.slider_width_mode == "fullwidth" %}<div class="caption-fullwidth container">{% endif %}
+              	<div class="slide-caption {{ slide_caption }}">
+                  	<div class="">
+                      	{% if settings[slide_txt1] != blank %}
+                      		<div class="text_first" style="color:{{ settings[capture_txtf_color] }}">{{ settings[slide_txt1] }}</div>
+                      	{% endif %}
+                      	{% if settings[slide_title] != blank %}
+                        	<h3 style="color:{{ settings[capture_title_color] }}">{{ settings[slide_title] }}</h3>
+                        	{% endif %}
+                        {% if settings[slide_des] != blank %}
+                        	<p style="color:{{ settings[capture_des_color] }}">{{ settings[slide_des] }}</p>
+                        {% endif %}
+                        {% if settings[slide_textlink] != blank %}
+                        	<a class="btn btn-slide" href="{{ settings[slide_urllink] }}" title="{{ settings[slide_textlink] }}">{{ settings[slide_textlink] }}</a>
+                        {% endif %}
+                  	</div>
+              	</div>
+              	{% if settings.slider_width_mode == "fullwidth" %}</div>{% endif %}
+  			</div>
+  		{% endif %}
+  	{% endfor %}
+</div>
+{% if settings.slider_width_mode == "boxed" %}
+    </div>
+{% endif %}
+{% assign slide_effect = 'random' %}
+{% assign slide_animationSpeed = '500' %}
+{% assign slide_pauseTime = '8000' %}
+
+{% if settings.slider_animation_type != blank %}
+	{% assign slide_effect = settings.slider_animation_type %}
+{% endif %}
+{% if settings.slideshow_transperiod != blank %}
+	{% assign slide_animationSpeed = settings.slideshow_transperiod %}
+{% endif %}
+{% if settings.slideshow_time != blank %}
+	{% assign slide_pauseTime = settings.slideshow_time %}
+{% endif %}
+<script>
+    $(document).ready(function() {
+        $('#sliderlayer').nivoSlider({
+          	effect: '{{ slide_effect }}',
+          	animSpeed: {{ slide_animationSpeed }},
+          	pauseTime: {{ slide_pauseTime }},
+          	prevText: '{{ 'home_page.slideshow.prev' | t }}',
+    		nextText: '{{ 'home_page.slideshow.next' | t }}'
+        });
+      	$('#sliderlayer').on('swipeleft',function(e){
+			$('a.nivo-nextNav').trigger('click');
+			e.stopPropagation();
+            return false;
+		});
+        $('#sliderlayer').on('swiperight',function(e){
+			$('a.nivo-prevNav').trigger('click');
+			e.stopPropagation();
+            return false;
+		});
+    });
+</script>

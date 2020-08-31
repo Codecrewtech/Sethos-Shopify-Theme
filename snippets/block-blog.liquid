@@ -1,0 +1,73 @@
+{% assign blogs_home = blogs[settings.home_blogs_select].articles %}
+{% assign blog_in_page = settings.home_blogs_itemperpage | plus:0 %}
+{% assign columns_blogscarousel = settings.home_blogs_itemcolumn | plus:0 %}
+{% assign blog_in_tab = settings.home_blogs_limit | plus:0 %}
+
+{% assign colBlog = 12 | divided_by:columns_blogscarousel %}
+{% if columns_blogscarousel == 1 %}
+	{% capture grid_blogscarousel %}col-md-{{ colBlog }} col-xs-12 col-sp-12{% endcapture %}
+{% else %}
+	{% capture grid_blogscarousel %}col-md-{{ colBlog }} col-xs-6 col-sp-12{% endcapture %}
+{% endif %}
+<article id="apolloblogs{{ block-blog }}" class="icenter home_blogs">
+	{% if settings.home_blogs_title != blank %}
+		<h3 class="page-subheading"><span>{{ settings.home_blogs_title }}</span></h3>
+	{% endif %}
+	<div class="block_content">
+		{% if settings.home_blogs_type == 'boostrap_carousel' %}
+			<div class="carousel slide" id="blogs{{ block-blog }}">
+				{% if blogs_home.size > columns_blogscarousel %}
+					<a class="carousel-control left" href="#blogs{{ block-blog }}"   data-slide="prev">&lsaquo;</a>
+					<a class="carousel-control right" href="#blogs{{ block-blog }}"  data-slide="next">&rsaquo;</a>
+				{% endif %}
+				<div class="carousel-inner">
+					{% for article in blogs_home limit:blog_in_tab %}
+                  		{% assign modpage = forloop.index | modulo:blog_in_page %}
+                  		{% if blog_in_page == 1 %}
+                  			<div class="item {% if forloop.first %}active{% endif %}">
+								<div class="row">
+						{% endif %}
+                  		{% if modpage == 1 %}
+                  			<div class="item {% if forloop.first %}active{% endif %}">
+								<div class="row">
+						{% endif %}
+                                  	{% include 'blog-item' %}
+						{% if modpage == 0 or forloop.last %}
+                              	</div>
+                        	</div>
+						{% endif %}
+					{% endfor %}
+				</div>
+			</div>
+		{% else %}
+			<div class="owl-row">
+                <div class="owl-carousel slide">
+                    {% for article in blogs_home limit:blog_in_tab %}
+                        {% assign grid_blogscarousel = '' %}
+                        {% include 'blog-item' %}
+                    {% endfor %}
+                </div>
+			</div>
+		{% endif %}
+	</div>
+</article>
+<script>
+	$(document).ready(function() {
+		{% if settings.home_blogs_type == 'boostrap_carousel' %}
+		    $('#apolloblogs{{ block-blog }} .carousel').each(function(){
+		        $(this).carousel({
+		            pause: 'hover',
+		            interval: {{ settings.home_blogs_interval }}
+		        });
+		    });
+	    {% else %}
+	    	$('#apolloblogs{{ block-blog }} .owl-carousel').each(function(){
+    		  	$(this).owlCarousel({
+    		      	items : {{ columns_blogscarousel }},
+    		      	lazyLoad : true,
+    		      	navigation : false
+		      	}); 
+    		});
+	    {% endif %}
+	});
+</script>

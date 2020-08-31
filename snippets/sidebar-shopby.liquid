@@ -1,0 +1,165 @@
+{% if settings.shop_by_vendor_enable and shop.vendors.size > 0 %}
+		<div id="shopbyvendor" class="block block_shopby {{ settings.shop_by_vendor_class }}">
+			{% if settings.shop_by_vendor_title != blank %}
+				<div class="title_block">
+					{{ settings.shop_by_vendor_title }}
+				</div>
+			{% endif %}
+			<div class="block_content">
+				<ul id="ul_catalog_vendor" class="listSidebar list-unstyled">
+                  	{% if settings.shop_by_vendor_custom_enable %}
+                  		{% assign items = settings.shop_by_vendor_custom_list | split:"," | strip %}
+                  		{% for vendor in shop.vendors %}
+                  			{% if items contains vendor %}
+                  				{% if collection.current_vendor == vendor %}
+                                    <li class="active" data-group="{{ settings.shop_by_vendor_title }}" data-handle="{{ collection.current_vendor | handleize }}">
+                                        {{ vendor | link_to_vendor }}
+                                    </li>
+                                {% else %}
+                                    <li data-group="{{ settings.shop_by_vendor_title }}">
+                                        {{ vendor | link_to_vendor }}
+                                    </li>
+                                {% endif %}
+                  				
+                  			{% endif %}
+                  		{% endfor %}
+                  	{% else %}
+                        {% for vendor in shop.vendors limit:settings.shop_by_vendor_number %}
+                            {% if collection.current_vendor == vendor %}
+                                <li class="active" data-group="{{ settings.shop_by_vendor_title }}" data-handle="{{ collection.current_vendor | handleize }}">
+                                    {{ vendor | link_to_vendor }}
+                                </li>
+                            {% else %}
+                                <li data-group="{{ settings.shop_by_vendor_title }}">
+                                    {{ vendor | link_to_vendor }}
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                  	{% endif %}
+				</ul>
+			</div>
+		</div>
+{% endif %}
+{% if settings.shop_by_type_enable and shop.types.size > 0 %}
+	<div id="shopbytype" class="block block_shopby {{ settings.shop_by_type_class }}">
+		{% if settings.shop_by_type_title != blank %}
+			<h4 class="title_block">
+				{{ settings.shop_by_type_title }}
+			</h4>
+		{% endif %}
+		<div class="block_content">
+			<ul class="listSidebar list-unstyled">
+              	{% if settings.shop_by_type_custom_enable %}
+              		{% assign items = settings.shop_by_type_custom_list | split:"," | strip %}
+              		{% for type in shop.types limit:settings.shop_by_type_number %}
+              			{% if type != blank %}
+              				{% if items contains type %}
+                                <li {% if collection.current_type == type %} class="active" {% endif %}>
+                                    {{ type | link_to_type }}
+                                </li>
+                            {% endif %}
+              			{% endif %}
+                    {% endfor %}
+              	{% else %}
+                    {% for type in shop.types limit:settings.shop_by_type_number %}
+                        {% if type != blank %}
+                            <li {% if collection.current_type == type %} class="active" {% endif %}>
+                                {{ type | link_to_type }}
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+				{% endif %}
+			</ul>
+		</div>
+	</div>
+{% endif %}
+{% if settings.shop_by_catalog_enable and template contains 'collection' %}
+	<div id="catalog_block" class="block {{ settings.shop_by_catalog_class }}">
+		{% if settings.shop_by_catalog_title != blank %}
+			<h4 class="title_block">
+				{{ settings.shop_by_catalog_title }}
+			</h4>
+		{% endif %}
+		<div style="" class="block_content">
+			{% if settings.shop_by_size_enable %}
+				<div class="catalog_filters">
+					{% if settings.shop_by_size_title != blank %}
+						<div class="catalog_subtitle_heading">
+							<span class="catalog_subtitle">{{ settings.shop_by_size_title }}</span>
+						</div>
+					{% endif %}
+					<ul id="ul_catalog_size" class="list-unstyled catalog_filter_ul">
+						{% assign list_size = settings.shop_by_size_list | split: ',' %}
+						{% for size in list_size %}
+							{% assign custom_tag = size | strip %}
+							{% if current_tags contains custom_tag %}
+								<li class="advanced-filter active-filter col-md-6" data-handle="{{ size | handleize }}">
+									{{ size | link_to_remove_tag: size }}
+								</li>
+							{% else %}
+                                    <li class="advanced-filter col-md-6" data-handle="{{ size | handleize }}">
+                                        {{ size | link_to_add_tag: size }}
+                                    </li>
+							{% endif %}
+						{% endfor %}
+					</ul>
+				</div>
+			{% endif %}
+			{% if settings.shop_by_price_enable %}
+				<div class="catalog_filters">
+					{% if settings.shop_by_price_title != blank %}
+						<div class="catalog_subtitle_heading">
+							<span class="catalog_subtitle">{{ settings.shop_by_price_title }}</span>
+						</div>
+					{% endif %}
+					<ul id="ul_catalog_price" class="list-unstyled catalog_filter_ul">
+						{% assign list_price = settings.shop_by_price_list | split: ',' %}
+						{% for price in list_price %}
+							{% assign custom_tag = price | strip %}
+							{% if current_tags contains custom_tag %}
+								<li class="advanced-filter active-filter" data-handle="{{ price | handleize }}">
+									{{ price | link_to_remove_tag: price }}
+								</li>
+							{% else %}
+                      				<li class="advanced-filter" data-handle="{{ price | handleize }}">
+                                        {{ price | link_to_add_tag: price }}
+                                    </li>
+							{% endif %}
+						{% endfor %}
+					</ul>
+				</div>
+			{% endif %}
+			{% if settings.shop_by_color_enable %}
+				<div class="catalog_filters">
+					{% if settings.shop_by_color_title != blank %}
+						<div class="catalog_subtitle_heading">
+							<span class="catalog_subtitle">{{ settings.shop_by_color_title }}</span>
+						</div>
+					{% endif %}
+					<ul id="ul_catalog_color" class="list-unstyled catalog_filter_ul color-group">
+						{% for i in (1..20) %}
+							{% capture color_text %}shop_by_color_text_{{i}}{% endcapture %}
+							{% capture color_image %}color-{{i}}.png{% endcapture %}
+							{% if settings[color_text] != blank %}
+								{% assign custom_tag = settings[color_text] | strip %}
+								{% if current_tags contains custom_tag %}
+									<li class="advanced-filter active-filter" data-handle="{{ custom_tag | handleize }}">
+										<a href="javascript:void(0);" class="catalog_color">
+                                          	<img class="img-responsive" alt="{{ settings[color_text] }}" src="{{ color_image | asset_url }}" />
+                                      	</a>
+									</li>
+								{% else %}
+                                        <li class="advanced-filter" data-handle="{{ custom_tag | handleize }}">
+                                            <a href="javascript:void(0);" class="catalog_color">
+                                                <img class="img-responsive" alt="{{ settings[color_text] }}" src="{{ color_image | asset_url }}" />
+                                            </a>
+                                        </li>
+								{% endif %}
+							{% endif %}
+						{% endfor %}
+					</ul>
+				</div>
+			{% endif %}
+		</div>
+	</div>
+{% endif %}

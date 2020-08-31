@@ -1,0 +1,91 @@
+<div id="popup-story" class="hide">
+    <div class="ps-form">
+        {% form 'contact' %}
+          <p class="alert alert-success hide">
+            {{ 'contact.form.post_success' | t }}
+          </p>
+          <div class="story-form-box">
+              <h3 class="title-heading">{{ title_block }}</h3>
+              <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                  <div class="form-group">
+                    {% assign name_attr = 'story.form.name' | t | handle %}
+                    <label for="StoryFormName" class="label--hidden">{{ 'story.form.name' | t }}</label>
+                    <input class="form-control grey" type="text" id="StoryFormName" name="contact[{{ name_attr }}]" placeholder="{{ 'story.form.name' | t }}" required autocapitalize="words" value="">
+                  </div>
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                  <div class="form-group">
+                    <label for="StoryFormEmail" class="label--hidden">{{ 'story.form.email' | t }}</label>
+                    <input class="form-control grey" type="email" id="StoryFormEmail" name="contact[email]" placeholder="{{ 'story.form.email' | t }}" required  autocorrect="off" autocapitalize="off" value="">
+                  </div>
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                  <div class="form-group">
+                    {% assign address_attr = 'story.form.address' | t | handle %}
+                    <label for="StoryFormAdress" class="label--hidden">{{ 'story.form.address' | t }}</label>
+                    <input class="form-control grey" type="text" id="StoryFormAdress" name="contact[{{ address_attr }}]" placeholder="{{ 'story.form.address' | t }}" value="">
+                  </div>
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                  <div class="form-group">
+                    {% assign job_attr = 'story.form.job' | t | handle %}
+                    <label for="StoryFormJob" class="label--hidden">{{ 'story.form.job' | t }}</label>
+                    <input class="form-control grey" type="text" id="StoryFormJob" name="contact[{{ job_attr }}]" placeholder="{{ 'story.form.job' | t }}" value="">
+                  </div>
+                </div>
+                <div class="col-xs-12 col-sm-12">
+                  <div class="form-group">
+                    <label for="ContactFormMessage" class="label--hidden">{{ 'story.form.message' | t }}</label>
+                    <textarea class="form-control" required rows="8" id="ContactFormMessage" name="contact[body]" placeholder="{{ 'story.form.message' | t }}">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+                  </div>
+                </div>
+              </div>
+              <div class="submit">
+                <input type="submit" class="btn btn-outline" value="{{ btn_send }}">
+              </div>
+          </div>
+        {% endform %}
+    </div>
+</div>
+<script type="text/javascript">
+    jQuery(document).ready(function($){
+      $('#blogsidebar-html .show-story').on('click', function () {
+         $.fancybox.open({
+          padding: 0,
+          autoSize:false,
+          overlayOpacity:	0.3,
+          overlayColor: '#333333',
+          'beforeLoad': function(){
+            $("#popup-story").removeClass('hide');
+            $("#popup-story").find('#contact_form').attr("id","popup_contact_form");
+          },
+          href: "#popup-story",
+          helpers:  {
+            overlay : true
+          },
+          afterClose : function(){
+            $("#popup-story").addClass('hide');
+          }
+        });
+        jQuery("#popup_contact_form").submit(function() {
+          var form_action = $("#popup_contact_form").attr('action');
+          var form_data = $("#popup_contact_form").serialize();
+          $.ajax({
+            url: form_action,
+            data: form_data,
+            type: 'POST',
+            error: function(jqXHR, textStatus, errorThrown) {
+              //  Request Failed. 
+            },
+            success: function(data) {
+              if(data.length > 0) {
+                $(".ps-form .alert-success").removeClass('hide');
+              }
+            }
+          });
+          return false;
+        });
+      });
+    });
+</script>

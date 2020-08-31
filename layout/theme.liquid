@@ -1,0 +1,72 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]><html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9 ]><html class="ie9 no-js"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> 
+<html class="no-js {% if settings.theme_rtl_enable %}rtl{% endif %}"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> -->
+          <link rel="alternate" hreflang="x-default" href="{{ shop.domain }}" />
+        {% if settings.favicon_enable %}
+            <link rel="shortcut icon" href="{{ 'favicon.png' | asset_url }}" type="image/png" />
+        {% endif %}
+        <title>
+            {{ page_title }}{% if current_tags %}{% assign meta_tags = current_tags | join: ', ' %} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags }}{% endif %}{% if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif %}{% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}
+        </title>
+        {% if page_description %}
+            <meta name="description" content="{{ page_description | escape }}">
+        {% endif %}
+        <!-- Product meta ============================================================= -->
+        {% include 'open-graph-tags' %}
+        {% include 'twitter-card' %}
+        <!-- Helpers ================================================================== -->
+        <link rel="canonical" href="{{ canonical_url }}">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <meta name="theme-color" content="{{ settings.color_primary }}">
+        <!-- Theme js ================================================================= -->
+        {% include 'head-js' %}
+        <!-- Theme css ================================================================ -->
+        {% include 'head-css' %}
+        <!-- Header hook for plugins ================================================== -->
+        {{ content_for_header }}
+</head>
+    <body id="{{ page_title | handle }}" class="{% if customer %}customer-logged-in {% endif %}template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }} {{ settings.theme_float_style }} {{ settings.theme_header_style }} {{ settings.theme_layout_mode }}" >
+        <div id="page">
+            <section id="page_content" class="">
+                <header id="header"{% if settings.theme_float_style == 'keep-header' %} class="navbar-fixed-top"{% endif %}>
+                    {% include 'header' %}
+                </header>
+                <main class="main-content">
+                    {{ content_for_layout }}
+                </main>
+                <footer id="footer">
+                    {% include 'footer' %}
+                </footer>
+              	{% include 'apollo-modal' %}
+                {% if settings.theme_quickview_enable %}
+                    {% include 'product-quickview' %}
+                {% endif %}
+              	{% if settings.ajax_cart_enable %}
+              		{% include 'ajax-cart-template' %}
+              	{% endif %}
+            </section>
+            {% if settings.theme_backtotop_enable %}
+                <p id="back-top">
+                    <a href="#top" title="Scroll To Top">Scroll To Top</a>
+                </p>
+              {% endif %}
+            {% if settings.theme_paneltool_enable %}
+                {% include 'paneltool' %}
+            {% endif %}
+      	</div>
+        {% if settings.apollo_megamenu_enable %}
+            {% include 'block-menu-canvas' %}
+        {% endif %}
+          {% if settings.pnewletter_enable and template contains 'index' %}
+            {% include 'block-popup-newletter' %}
+        {% endif %}
+          {% include 'footer-js' %}
+    </body>
+</html>

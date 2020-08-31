@@ -1,0 +1,31 @@
+{{ 'plugin.js' | asset_url | script_tag }}
+{% if settings.ajax_cart_enable %}
+	{{ 'handlebars.min.js' | asset_url | script_tag }}
+	{{ 'ajaxify.js' | asset_url | script_tag }}
+	<script>
+		jQuery(function($) {
+			ajaxifyShopify.init({
+				method: '{{ settings.ajax_cart_method }}',
+				wrapperClass: 'wrapper',
+				formSelector: '.form-ajaxtocart',
+				addToCartSelector: '.ajax_addtocart',
+				cartCountSelector: '#CartCount',
+				cartCostSelector: '#CartCost',
+				toggleCartButton: '#CartToggle',
+				useCartTemplate: true,
+				btnClass: 'btn',
+				moneyFormat: {{ shop.money_format | json }},
+				disableAjaxCart: false,
+				enableQtySelectors: true,
+				prependDrawerTo: 'body'
+			});
+		});
+      	
+	</script>
+{% endif %}
+<script type="text/javascript">
+  	Shopify.Products.recordRecentlyViewed();
+</script>
+{% include 'new-currency' %}
+{% include 'linked-options' %}
+{{ 'master.js' | asset_url | script_tag }}

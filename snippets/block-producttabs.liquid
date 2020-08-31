@@ -1,0 +1,137 @@
+{% comment %}
+	/* Các biến cần truyền vào */
+    {% assign item_in_page = settings.producttabs_itempage | plus:0 %}
+    {% assign columns_product = settings.producttabs_columntab | plus:0 %}
+    {% assign product_in_tab = settings.producttabs_limit | plus:0 %}
+
+    {% assign product_type = settings.producttabs_type %}
+    {% assign product_interval = settings.producttabs_interval %}
+
+    {% assign protab_title_1 = settings.producttabs_title1 %}
+    {% assign protab_title_2 = settings.producttabs_title2 %}
+    {% assign protab_title_3 = settings.producttabs_title3 %}
+    {% assign protab_title_4 = settings.producttabs_title4 %}
+
+    {% assign protab_collections_1 = collections[settings.producttabs_collection_1].products %}
+    {% assign protab_collections_2 = collections[settings.producttabs_collection_2].products %}
+    {% assign protab_collections_3 = collections[settings.producttabs_collection_3].products %}
+    {% assign protab_collections_4 = collections[settings.producttabs_collection_4].products %}
+{% endcomment %}
+{% unless proLazyLoad %}
+	{% assign proLazyLoad = false %}
+{% endunless %}
+<div id="productTabs{{ block-producttabs }}" class="products_block exclusive block">
+	<div class="box-line">
+		<ul class="productTabsNav nav nav-tabs">
+			{% if protab_title_1 != blank %}
+				<li><a href="#proTab1{{ block-producttabs }}" data-toggle="tab"><span>{{ protab_title_1 }}</span></a></li>
+			{% endif %}
+			{% if protab_title_2 != blank %}
+          		<li><a href="#proTab2{{ block-producttabs }}" data-toggle="tab"><span>{{ protab_title_2 }}</span></a></li>
+			{% endif %}
+      		{% if protab_title_3 != blank %}
+          		<li><a href="#proTab3{{ block-producttabs }}" data-toggle="tab"><span>{{ protab_title_3 }}</span></a></li>
+  			{% endif %}
+      		{% if protab_title_4 != blank %}
+      			<li><a href="#proTab4{{ block-producttabs }}" data-toggle="tab"><span>{{ protab_title_4 }}</span></a></li>
+      		{% endif %}
+		</ul>
+		<div class="block_content">
+			<div class="product_tab_content tab-content">
+				{% if protab_title_1 != blank %}
+					<div class="tab-pane" id="proTab1{{ block-producttabs }}">
+						{% assign collection_produclists = protab_collections_1 %}
+						{% if product_type == 'boostrap_carousel' %}
+							{% capture product_carousel %}producttab01{{ block-producttabs }}{% endcapture %}
+							{% include 'product-carousel' %}
+						{% else %}
+							{% include 'product-carousel-owl' %}
+						{% endif %}
+	              	</div>
+              	{% endif %}
+              	{% if protab_title_2 != blank %}
+					<div class="tab-pane" id="proTab2{{ block-producttabs }}">
+						{% assign collection_produclists = protab_collections_2 %}
+						{% if product_type == 'boostrap_carousel' %}
+							{% capture product_carousel %}producttab02{{ block-producttabs }}{% endcapture %}
+							{% include 'product-carousel' %}
+						{% else %}
+							{% include 'product-carousel-owl' %}
+						{% endif %}
+	              	</div>
+              	{% endif %}
+              	{% if protab_title_3 != blank %}
+					<div class="tab-pane" id="proTab3{{ block-producttabs }}">
+						{% assign collection_produclists = protab_collections_3 %}
+						{% if product_type == 'boostrap_carousel' %}
+							{% capture product_carousel %}producttab03{{ block-producttabs }}{% endcapture %}
+							{% include 'product-carousel' %}
+						{% else %}
+							{% include 'product-carousel-owl' %}
+						{% endif %}
+	              	</div>
+              	{% endif %}
+              	{% if protab_title_4 != blank %}
+					<div class="tab-pane" id="proTab4{{ block-producttabs }}">
+						{% assign collection_produclists = protab_collections_4 %}
+						{% if product_type == 'boostrap_carousel' %}
+							{% capture product_carousel %}producttab04{{ block-producttabs }}{% endcapture %}
+							{% include 'product-carousel' %}
+						{% else %}
+							{% include 'product-carousel-owl' %}
+						{% endif %}
+	              	</div>
+              	{% endif %} 
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	$(document).ready(function() {
+		{% if product_type == 'boostrap_carousel' %}
+		    $('#productTabs{{ block-producttabs }} .carousel').each(function(){
+		        $(this).carousel({
+		            pause: 'hover',
+              		interval: {{ product_interval }}
+		        });
+		    });
+	    {% else %}
+	    	$('#productTabs{{ block-producttabs }} .owl-carousel').each(function(){
+    		  	$(this).owlCarousel({
+    		      	items : {{ columns_product }},
+    		      	lazyLoad : true,
+    		      	navigation : true,
+	              	addClassActive: true,
+			        afterAction : SetOwlCarouselFirstLast,
+              		afterInit: OwlLoaded,
+              		{% if product_interval != blank %}
+              			autoPlay: {{ product_interval }},
+                    {% endif %}
+              		{% if columns_product == 1 %}
+              			itemsDesktop: [1199, 1],
+                        itemsDesktopSmall: [979, 1],
+                        itemsTablet: [768, 1],
+                        itemsTabletSmall: [480, 1],
+                        itemsMobile: [360, 1],
+              		{% elsif columns_product < 3 %}
+              			itemsDesktop: [1199, 2],
+                        itemsDesktopSmall: [979, 2],
+                        itemsTablet: [768, 2],
+                        itemsTabletSmall: [480, 2],
+                        itemsMobile: [360, 1],
+              		{% else %}
+              			itemsDesktop: [1199, 3],
+                        itemsDesktopSmall: [979, 2],
+                        itemsTablet: [768, 2],
+                        itemsTabletSmall: [480, 2],
+                        itemsMobile: [360, 1],
+              		{% endif %}
+              		navigationText : ["{{ 'products.carousel.preview' | t }}", "{{ 'products.carousel.next' | t }}"]
+		      	}); 
+    		});
+	    {% endif %}
+		$("#productTabs{{ block-producttabs }} .nav-tabs li", this).first().addClass("active");
+		$("#productTabs{{ block-producttabs }} .tab-content .tab-pane", this).first().addClass("active");
+	});
+</script>
+{% assign proLazyLoad = false %}

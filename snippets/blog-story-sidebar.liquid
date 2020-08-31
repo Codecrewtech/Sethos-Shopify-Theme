@@ -1,0 +1,21 @@
+
+<div id="blogsidebar-html" class="sidebarBlog blog-story block">
+  {% if image_link != blank %}
+  <div class="effect">
+    <a href="{{ image_link }}">
+      <div class="image">
+        {{ image_name | asset_url | img_tag: image_link, "img-responsive" }}
+      </div>
+    </a>
+  </div>
+  {% endif %}
+  {% if title_block %}
+  <h4 class="title_block">{{ title_block }}</h4>
+  {% endif %}
+  <div class="sidebarhtml_content">
+    <div class="html_des">
+      {{ desc_block }}
+    </div>
+    <p><a class="show-story btn btn-outline" href="#popup-story">{{ btn_text }}</a></p>
+  </div>      	
+</div>

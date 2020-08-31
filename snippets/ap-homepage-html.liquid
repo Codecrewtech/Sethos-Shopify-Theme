@@ -1,0 +1,47 @@
+<div class="homepage-html">
+    <div class="html-left">
+        <a class="btn-image" href="{{ settings.home_html_link }}">{{ settings.home_html_lefttext }}</a>
+    </div>
+    <div class="html-right">
+      	<div class="html-right-content">
+            <div class="owl-carousel">
+                {% for i in (1..3) %}
+                    {% assign itemEnable = 'home_html_enable' | append:i %}
+                    {% assign imageName = 'home_html' | append:i | append:'.jpg' %}
+                    {% assign textTitle = 'home_html_title' | append:i %}
+                    {% assign textDesc = 'home_html_description' | append:i %}
+                    {% assign textButton = 'home_html_btntext' | append:i %}
+                    {% assign textLink = 'home_html_link' | append:i %}
+                    {% if settings[itemEnable] %}
+                        <div class="html-item">
+                            <div class="ap-html-image">
+                                <a href="{{ settings[textLink] }}"><img alt="{{ settings[textTitle] }}" class="img-responsive" src="{{ imageName | asset_url }}" /></a>
+                            </div>
+                            <div class="ap-html-content">
+                                <div class="dio-heading">
+                                    <h3>{{ settings[textTitle] }}</h3>
+                                </div>
+                                <div class="html-content">
+                                    <div class="html-description">{{ settings[textDesc] }}</div>
+                                    <a class="btn btn-html" href="{{ settings[textLink] }}">{{ settings[textButton] }}</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+      	</div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.homepage-html .owl-carousel').each(function(){
+            $(this).owlCarousel({
+                singleItem: true,
+                navigation: false,
+              	autoPlay: 14000,
+                addClassActive: true
+            }); 
+        });
+    });
+</script>

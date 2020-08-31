@@ -1,0 +1,78 @@
+{% unless title_block %}
+	{% assign title_block = '' %}
+{% endunless %}
+{% unless product_interval %}
+	{% assign product_interval = 8000 %}
+{% endunless %}
+{% unless type_block %}
+	{% assign type_block = 'owl_carousel' %}
+{% endunless %}
+{% unless proLazyLoad %}
+	{% assign proLazyLoad = false %}
+{% endunless %}
+{% unless collection_produclists %}
+	{% assign collection_produclists = collections.all.products %}
+{% endunless %}
+<div id="productlist{{ block-productlist }}" class="products_block exclusive block" >
+	{% if title_block != blank %}
+  		<div class="dio-heading title-homepage">
+          	<h3>{{ title_block }}</h3>
+          	<span>{{ title_block_bg }}</span>
+        </div>
+	{% endif %}
+	<div class="block_content">
+		{% if type_block == 'boostrap_carousel' %}
+			{% capture product_carousel %}product_list_00{{ block-productlist }}{% endcapture %}
+			{% include 'product-carousel' %}
+		{% else %}
+			{% include 'product-carousel-owl' %}
+		{% endif %}
+	</div>
+</div>
+<script type="text/javascript">
+	$(document).ready(function() {
+		{% if type_block == 'boostrap_carousel' %}
+	    $('#productlist{{ block-productlist }}').each(function(){
+	        $(this).carousel({
+	            pause: 'hover',
+	            interval: {{ product_interval }}
+	        });
+	    });
+	    {% else %}
+	    	$('#productlist{{ block-productlist }} .owl-carousel').each(function(){
+    		  	$(this).owlCarousel({
+    		      	items: {{ columns_product }},
+    		      	lazyLoad: true,
+    		      	navigation: true,
+	              	addClassActive: true,
+			        afterAction: SetOwlCarouselFirstLast,
+              		afterInit: OwlLoaded,
+              		{% if product_interval != blank %}
+              			autoPlay: {{ product_interval }},
+                    {% endif %}
+              		{% if columns_product == 1 %}
+              			itemsDesktop: [1199, 1],
+                        itemsDesktopSmall: [979, 1],
+                        itemsTablet: [768, 1],
+                        itemsTabletSmall: [480, 1],
+                        itemsMobile: [360, 1],
+              		{% elsif columns_product < 4 %}
+              			itemsDesktop: [1199, 2],
+                        itemsDesktopSmall: [979, 2],
+                        itemsTablet: [768, 2],
+                        itemsTabletSmall: [480, 2],
+                        itemsMobile: [360, 1],
+              		{% else %}
+              			itemsDesktop: [1199, 3],
+                        itemsDesktopSmall: [979, 2],
+                        itemsTablet: [768, 2],
+                        itemsTabletSmall: [480, 2],
+                        itemsMobile: [360, 1],
+              		{% endif %}
+              		navigationText: ["{{ 'products.carousel.preview' | t }}", "{{ 'products.carousel.next' | t }}"]
+		      	}); 
+    		});
+	    {% endif %}
+	});
+</script>
+{% assign proLazyLoad = false %}

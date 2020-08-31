@@ -1,0 +1,63 @@
+<div class="footer-container">
+    <section id="footercenter" class="footer-center">
+        <div class="container">
+            <div class="footer-center-wrap">
+                <div class="flex-row display-flex">
+                  	<div class="col-md-5 col-sm-6 col-xs-12">
+                      	{% if settings.footer_quicklinks_enable %}
+                      		<div class="block footer-about footerAccordion">
+                              	<h4 class="title_block">{{ settings.footer_about_title }}</h4>
+                              	<div class="block_content">
+                                  	<div class="about-shop">
+                                      	<div class="footer-logo">
+                                      		<a href="{{ settings.footer_logo_link }}">
+                                      			<img class="img-responsive" alt="{{ settings.footer_about_title }}" src="{{ 'footer_logo.png' | asset_url }}" />
+                                      		</a>
+                                      	</div>
+                                      	<div class="about-content">
+                                      		{{ settings.footer_about_desc }}
+                                      	</div>
+                                  	</div>
+                              	</div>
+                      		</div>
+                      	{% endif %}
+                  	</div>
+                  	<div class="col-md-2 col-sm-6 col-xs-12">
+                        {% if settings.footer_quicklinks_enable %}
+                            {% assign footerlinks_name = settings.footer_quicklinks_linklist %}
+                            {% assign footerlinks_title = settings.footer_quicklinks_title %}
+                            {% include 'block-footerlinks' with '1' %}
+                        {% endif %}
+                    </div>
+                    <div class="col-md-2 col-sm-6 col-xs-12">
+                        {% if settings.footer_quicklinks_enable_1%}
+                            {% assign footerlinks_name = settings.footer_quicklinks_linklist_1 %}
+                            {% assign footerlinks_title = settings.footer_quicklinks_title_1 %}
+                            {% include 'block-footerlinks' with '2' %}
+                        {% endif %}
+                    </div>
+                  	<div class="col-md-3 col-sm-6 col-xs-12">
+                      	{% if settings.footer_html_enable%}
+                      		<div class="block footer-html footerAccordion">
+                              	<h4 class="title_block">{{ settings.footer_html_title }}</h4>
+                              	<div class="block_content">
+                                  	{{ settings.footer_html_desc }}
+                              	</div>
+                      		</div>
+                      	{% endif %}
+                  	</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="footernav" class="footer-nav">
+        <div class="container">
+          	<div class="row">
+                <div class="powered col-xs-12 col-sm-6">&copy; Copyright {{ "now" | date: "%Y" }} {{ shop.name }}. {% if settings.footer_nav_powered %}{{ powered_by_link }}{% endif %}</div>
+              	{% if settings.footer_nav_logopayment %}
+              		<div class="logo-payment col-xs-12 col-sm-6"><img class="img-responsive" alt="Payment" src="{{ 'logo-payment.png' | asset_url }}" /></div>
+              	{% endif %}
+            </div>
+        </div>
+    </section>
+</div>

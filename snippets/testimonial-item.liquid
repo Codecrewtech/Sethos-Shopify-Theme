@@ -1,0 +1,34 @@
+{% assign countStar = settings[itemRaing] | plus:0 %}
+<div class="testimonial-item">
+    {% comment %}
+    <div class="tesrating clearfix">
+        <div class="star_content">
+            {% for s in (1..5) %}
+                {% if s <= countStar %}
+                    <div class="star star_on"></div>
+                {% else %}
+                    <div class="star"></div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    {% endcomment %}
+    <div class="testimonial">
+        <p>
+            {{ settings[itemReview] }}
+        </p>
+    </div>
+    {% if settings[itemName] != blank %}
+        <div class="profile">
+            <div class="image">
+                {% if isAvatar %}
+                    <img class="img-circle" src="{{ itemAvatar | asset_url }}" alt="{{ settings[itemName] }}">
+                {% endif %}
+            </div>
+            <div class="text">
+                <h5>{{ settings[itemName] }}</h5>
+                <p>{{ settings[itemPosition] }}</p>
+            </div>
+        </div>
+    {% endif %}
+</div>

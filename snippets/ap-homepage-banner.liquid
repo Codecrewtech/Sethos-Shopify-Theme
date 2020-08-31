@@ -1,0 +1,23 @@
+<div class="homepage-banner">
+  	<div class="flex-row">
+  		{% if settings.home_htban_title != blank or settings.home_htban_description != blank %}
+      		<div class="hbanner-left">
+              	<div class="banner-text">
+                  	<h4 class="banner-title">{{ settings.home_htban_title }}</h4>
+                  	<div class="banner-desc">{{ settings.home_htban_description }}</div>
+              	</div>
+      		</div>
+      	{% endif %}
+      	<div class="hbanner-right">
+            <div class="banner-image">
+				{% if settings.home_htban_imglink != blank %}
+              		<a href="{{ settings.home_htban_imglink }}" title="{{ settings.home_htban_title }}">
+              			<img class="img-responsive" src="{{ 'home_htban.jpg' | asset_url }}" alt="{{ settings.home_htban_title }}" />
+              		</a>
+              	{% else %}
+              		<img class="img-responsive" src="{{ 'home_htban.jpg' | asset_url }}" alt="{{ settings.home_htban_title }}" />
+              	{% endif %}
+            </div>
+        </div>
+  	</div>
+</div>

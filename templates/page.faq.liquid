@@ -1,0 +1,26 @@
+{% include 'breadcrumb' %}
+<section id="columns" class="columns-container">
+	<div class="container">
+		<div class="row">
+			<div id="center_column" class="col-md-9">
+              	<div class="page-wrap">
+                    <div class="page-content">
+                        <div class="rte">
+                            {% include 'shortcode' load: page.content %}
+                        </div>
+                    </div>
+              	</div>
+			</div>
+            <div id="right_column" class="column sidebar col-md-3">
+              {% if settings.faq2_html_enable %}
+              {% assign image_name = 'blogstore_html.png' %}
+              {% assign title_block = settings.faq2_html_title %}
+              {% assign image_link = settings.faq2_html_link %}
+              {% assign btn_text = settings.faq2_html_btn %}
+              {% assign desc_block = settings.faq2_html_des %} 
+              {% include 'blog-story-sidebar' %}
+              {% endif %}
+            </div>
+		</div>
+	</div>
+</section>

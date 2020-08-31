@@ -1,0 +1,39 @@
+<div class="blog-item item {{ grid_blogscarousel }}">
+	<div class="media-body clearfix">
+		<div class="blog-meta">
+			{% if settings.home_blogs_createdate %} 
+				<span class="blog-created">
+					<span class="icon-calendar">
+						<time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: format: 'month_day_year' }}</time>
+					</span>
+				</span>
+			{% endif %}
+			{% if settings.home_blogs_counter %} 
+				<span class="blog-ctncomment">
+					<span class="icon-comment">
+						<a href="{{ article.url }}#comments">
+					    	/ {{ 'blogs.comments.comments_with_count' | t: count: article.comments_count }}
+					  	</a>
+					</span>
+				</span>
+			{% endif %}
+		</div>
+		<h4><a href="{{ article.url }}" title="{{ article.title }}">{{ article.title }}</a></h4>
+		<div class="blog-shortinfo">
+			{% if article.excerpt.size > 0 %}
+          		{{ article.excerpt }}
+	        {% else %}
+          		<p>{{ article.content | strip_html | truncatewords: 15 }}</p>
+	        {% endif %}
+		</div>
+		<p><a class="link" href="{{ article.url }}">{{ 'blogs.article.read_more' | t }}</a></p>
+	</div>
+	{% if settings.home_blogs_showimage %}
+		{% if article.image %}
+			<div class="image">
+				{% assign imageSize = settings.home_blogs_imagesize %}
+				<img src="{{ article.image | img_url: imageSize }}" class="img-responsive" alt="{{ article.title }}" />
+			</div>
+		{% endif %}
+	{% endif %}
+</div>

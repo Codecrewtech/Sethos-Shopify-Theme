@@ -1,0 +1,86 @@
+{% assign tesInPage = settings.testimonials_itempage | plus:0 %}
+{% assign tesColumns = settings.testimonials_columntab | plus:0 %}
+{% assign titleBlock = settings.testimonials_title %}
+{% assign titleBgText = settings.testimonials_bgtext %}
+{% assign isAvatar = settings.testimonials_useavatar %}
+
+<div id="testimonials" class="block block-testimonial">
+    {% if titleBlock != blank %}
+  		<div class="dio-heading title-homepage">
+          	<h3>{{ titleBlock }}</h3>
+          	<span>{{ titleBgText }}</span>
+        </div>
+    {% endif %}
+    <div class="block_content">
+        <div class="owl-row">
+            <div class="owl-carousel">
+                {% for i in (1..10) %}
+                    {% capture itemEnable %}testimonials_item{{ i }}_enable{% endcapture %}
+                    {% capture itemAvatar %}testimonial_{{ i }}.png{% endcapture %}
+                    {% capture itemName %}testimonials_item{{ i }}_name{% endcapture %}
+                    {% capture itemRaing %}testimonials_item{{ i }}_star{% endcapture %}
+                    {% capture itemReview %}testimonials_item{{ i }}_review{% endcapture %}
+                    {% capture itemPosition %}testimonials_item{{ i }}_pos{% endcapture %}
+                    {% if settings[itemEnable] %}
+                        <div class="item">
+                            {% include 'testimonial-item' %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function() {
+      	function setImageForPageNav()
+        {	
+            $('#testimonials .owl-item').each(function(){
+              	if($(this).find('.image').html())
+              	{
+                	$('#testimonials .owl-page').eq($(this).index()).empty().append($(this).find('.image').html());
+              	}
+            })
+        }
+        $('#testimonials .owl-carousel').each(function(){
+            $(this).owlCarousel({
+                items : {{ tesColumns }},
+                lazyLoad : true,
+                slideSpeed : 1000,
+                paginationSpeed : 800,
+                rewindSpeed : 1000,
+              	afterInit : setImageForPageNav,
+                {% if settings.testimonials_autoplay %}
+                    autoPlay : {{ settings.testimonials_speed }},
+                {% else %}
+                    autoPlay : false,
+                {% endif %}
+              	{% if tesColumns == 1 %}
+                    itemsDesktop: [1199, 1],
+                    itemsDesktopSmall: [979, 1],
+                    itemsTablet: [768, 1],
+                    itemsTabletSmall: [480, 1],
+                    itemsMobile: [360, 1],
+                {% elsif tesColumns < 4 %}
+                    itemsDesktop: [1199, 2],
+                    itemsDesktopSmall: [979, 2],
+                    itemsTablet: [768, 2],
+                    itemsTabletSmall: [480, 1],
+                    itemsMobile: [360, 1],
+                {% else %}
+                    itemsDesktop: [1199, 3],
+                    itemsDesktopSmall: [979, 2],
+                    itemsTablet: [768, 2],
+                    itemsTabletSmall: [480, 1],
+                    itemsMobile: [360, 1],
+                {% endif %}
+              	stopOnHover : true,
+              	{% if settings.testimonials_navigation %}
+                	navigation : true
+              	{% else %}
+              		navigation : false
+              	{% endif %}
+            }); 
+        });
+    });
+</script>

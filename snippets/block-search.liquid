@@ -1,0 +1,37 @@
+<script type="text/javascript">
+    $(document).ready( function(){ 
+      	$("#search_block_top").each( function(){
+			$("#search-icon").click( function(){
+				$(".header-boxsearch").toggleClass("active");
+              	$(".close-boxsearch").toggleClass("active");
+              	$(".over-layer").toggleClass("active");
+            });
+          	$(".close-boxsearch").click( function(){
+              	var hasClass = $(this).hasClass('active');
+              	if(hasClass){
+                    $(".header-boxsearch").removeClass("active");
+                    $(".close-boxsearch").removeClass("active");
+                    $(".over-layer").removeClass("active");
+                }
+            });
+        }); 
+    });
+</script>
+<div id="search_block_top" class="">
+    <span id="search-icon" class="fa fa-search" title="Search"></span>
+  	<span class="close-boxsearch"></span>
+  	<span class="over-layer"></span>
+  	<div class="header-boxsearch">
+      	<div class="boxsearch">
+            <form id="searchbox" class="popup-content container" action="/search" method="get">
+                <input type="hidden" name="type" value="product">
+                <input id="search_query_top" class="search_query form-control" type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'general.search.placeholder' | t }}" aria-label="{{ 'general.search.placeholder' | t }}" autocomplete="off" />
+                <button id="search_button" class="btn btn-sm" type="submit" >
+                    <span><i class="fa fa-search"></i></span>
+                    <span class="fallback-text">{{ 'general.search.submit' | t }}</span>
+                </button>
+              <div id="ap-ajax-search" class="hidden-sm hidden-xs container"><ul class="list-unstyled aps-results"></ul></div>
+            </form>
+        </div>
+  	</div>
+</div>

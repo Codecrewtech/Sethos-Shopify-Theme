@@ -1,0 +1,14 @@
+{% unless product_in_tab %}
+	{% assign product_in_tab = 12 %}
+{% endunless %}
+<div class="product_list_owl">
+    <div class="owl-carousel owl-loading slide">
+        {% assign grid_item_width = ' ' %}
+        {% assign products = collection_produclists %}
+        {% for product in products limit:product_in_tab %}
+            <div class="item{% if forloop.first %} first{% endif %}">
+              	{% include 'product-grid-item' %}
+            </div>
+        {% endfor %}
+    </div>
+</div>
